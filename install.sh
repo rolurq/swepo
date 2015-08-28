@@ -6,3 +6,4 @@ if [ $(whoami) != "root" ]; then
 fi
 
 cp swepo.sh /usr/bin/swepo
+cp completion.sh /usr/share/bash-completion/completions/swepo
