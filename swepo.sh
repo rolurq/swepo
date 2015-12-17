@@ -28,6 +28,6 @@ for name; do
        "$SOURCES/sources.list.d/$name.list"  # enable the desired sources
 done
 
-if [ -z "$@" ]; then
-    mv $SOURCES/sources.list.disabled $SOURCES/sources.list
+if [ -z '$@' ]; then
+    mv "$SOURCES/sources.list.disabled" "$SOURCES/sources.list"
 fi
