@@ -27,6 +27,7 @@ while true ; do
     case "$1" in
         # set the state acording to the current option
         -d|--disable) ACTION=disable ; shift ;;
+        -a|--add) ACTION=add ; shift ;;
         -c|--config) ACTION=config ; shift ;;
         "") break ;;  # no more arguments
         *)
@@ -37,6 +38,12 @@ while true ; do
                         mv $SOURCES/sources.list.d/$1.list \
                            $SOURCES/sources.list.d/$1.list.disabled ;
                     fi ;
+                    shift ;;
+                add)
+                    # create the file
+                    # if the file is already created then it will just edit
+                    touch $SOURCES/sources.list.d/$1.list ;
+                    edit $SOURCES/sources.list.d/$1.list ;
                     shift ;;
                 config)
                     edit $SOURCES/sources.list.d/$1.list* ;
