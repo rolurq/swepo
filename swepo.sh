@@ -26,10 +26,18 @@ ACTION=enable
 while true ; do
     case "$1" in
         # set the state acording to the current option
+        -d|--disable) ACTION=disable ; shift ;;
         -c|--config) ACTION=config ; shift ;;
         "") break ;;  # no more arguments
         *)
             case $ACTION in
+                disable)
+                    # disable if is not
+                    if [ -a $SOURCES/sources.list.d/$1.list ] ; then
+                        mv $SOURCES/sources.list.d/$1.list \
+                           $SOURCES/sources.list.d/$1.list.disabled ;
+                    fi ;
+                    shift ;;
                 config)
                     edit $SOURCES/sources.list.d/$1.list* ;
                     if [ $? != 0 ] ; then
