@@ -27,6 +27,7 @@ while true ; do
     case "$1" in
         # set the state acording to the current option
         -d|--disable) ACTION=disable ; shift ;;
+        -e|--enable) ACTION=enable ; shift ;;
         -a|--add) ACTION=add ; shift ;;
         -c|--config) ACTION=config ; shift ;;
         "") break ;;  # no more arguments
@@ -37,6 +38,13 @@ while true ; do
                     if [ -a $SOURCES/sources.list.d/$1.list ] ; then
                         mv $SOURCES/sources.list.d/$1.list \
                            $SOURCES/sources.list.d/$1.list.disabled ;
+                    fi ;
+                    shift ;;
+                enable)
+                    # enable if is not
+                    if [ -a $SOURCES/sources.list.d/$1.list.disabled ] ; then
+                        mv $SOURCES/sources.list.d/$1.list.disabled \
+                           $SOURCES/sources.list.d/$1.list ;
                     fi ;
                     shift ;;
                 add)
