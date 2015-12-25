@@ -6,7 +6,7 @@ _swepo() {
     cur="${COMP_WORDS[COMP_CWORD]}"  # update completion word
 
     # generate completion list
-    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    COMPREPLY=( $(compgen -W "${opts} -a --add" -- ${cur}) )
 
     return 0
 }
