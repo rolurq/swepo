@@ -29,6 +29,7 @@ while true ; do
         -d|--disable) ACTION=disable ; shift ;;
         -e|--enable) ACTION=enable ; shift ;;
         -a|--add) ACTION=add ; shift ;;
+        -r|--remove) ACTION=remove ; shift ;;
         -c|--config) ACTION=config ; shift ;;
         "") break ;;  # no more arguments
         *)
@@ -52,6 +53,11 @@ while true ; do
                     # if the file is already created then it will just edit
                     touch $SOURCES/sources.list.d/$1.list ;
                     edit $SOURCES/sources.list.d/$1.list ;
+                    shift ;;
+                remove)
+                    # remove the correct file in one of the two calls
+                    rm $SOURCES/sources.list.d/$1.list 2> /dev/null
+                    rm $SOURCES/sources.list.d/$1.list.disabled 2> /dev/null
                     shift ;;
                 config)
                     edit $SOURCES/sources.list.d/$1.list* ;
