@@ -7,7 +7,7 @@ _swepo() {
 
     # generate completion list
     COMPREPLY=( $(compgen -W "${opts} -a --add -e --enable "\
-      "-r --remove" -- ${cur}) )
+      "-r --remove -d --disable -c --config" -- ${cur}) )
 
     return 0
 }
