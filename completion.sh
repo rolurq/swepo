@@ -1,13 +1,18 @@
 _swepo() {
     local cur opts
+    _init_completion || return
 
     # get sources names until first '.'
     opts=`ls /etc/apt/sources.list.d | cut -d . -f 1`
     cur="${COMP_WORDS[COMP_CWORD]}"  # update completion word
 
     # generate completion list
-    COMPREPLY=( $(compgen -W "${opts} -a --add -e --enable "\
-      "-r --remove -d --disable -c --config" -- ${cur}) )
+    if [[ "$cur" == -* ]]; then
+        COMPREPLY=( $( compgen -W '-a --add -c --config -d --disable
+          -e --enable -r --remove' -- ${cur} ) )
+    else
+        COMPREPLY=( $( compgen -W "${opts}" -- ${cur} ) )
+    fi
 
     return 0
 }
