@@ -38,6 +38,23 @@ while true ; do
         -c|--config) ACTION=config ; shift ;;
         "") break ;;  # no more arguments
         *)
+            # control opposite actions
+            # add, remove and config doesn't cause trouble
+            case $ACTION in
+                add)
+                    # create the file
+                    # if the file is already created then it will just edit
+                    touch $SOURCES/sources.list.d/$source.list ;
+                    edit $SOURCES/sources.list.d/$source.list ;
+                remove)
+                    # remove the correct file in one of the two calls
+                    rm $SOURCES/sources.list.d/$source.list 2> /dev/null
+                    rm $SOURCES/sources.list.d/$source.list.disabled 2> /dev/null
+                config)
+                    edit $SOURCES/sources.list.d/$source.list* ;
+                    if [ $? != 0 ] ; then
+                        echo "Error editing!" ; exit 1 ; fi ;
+                esac ;
             # store the action asociated with each file
             # prevents multiple actions in one file
             FILES=($FILES $1) ; LIST_FILES[$1]=$ACTION ; shift ;;
@@ -52,31 +69,13 @@ for source in $FILES; do
             if [ -a $SOURCES/sources.list.d/$source.list ] ; then
                 mv $SOURCES/sources.list.d/$source.list \
                    $SOURCES/sources.list.d/$source.list.disabled ;
-            fi ;
-            shift ;;
+            fi ;;
         enable)
             # enable if is not
             if [ -a $SOURCES/sources.list.d/$source.list.disabled ] ; then
                 mv $SOURCES/sources.list.d/$source.list.disabled \
                    $SOURCES/sources.list.d/$source.list ;
-            fi ;
-            shift ;;
-        add)
-            # create the file
-            # if the file is already created then it will just edit
-            touch $SOURCES/sources.list.d/$source.list ;
-            edit $SOURCES/sources.list.d/$source.list ;
-            shift ;;
-        remove)
-            # remove the correct file in one of the two calls
-            rm $SOURCES/sources.list.d/$source.list 2> /dev/null
-            rm $SOURCES/sources.list.d/$source.list.disabled 2> /dev/null
-            shift ;;
-        config)
-            edit $SOURCES/sources.list.d/$source.list* ;
-            if [ $? != 0 ] ; then
-                echo "Error editing!" ; exit 1 ; fi ;
-            shift ;;
+            fi ;;
     esac ;
 done
 
