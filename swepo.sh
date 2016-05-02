@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# configuration
+SOURCES="/etc/apt"
+SOURCES_D="sources.list.d"
+
 if [ $(whoami) != "root" ]; then
     sudo $0 $@
     exit
@@ -13,13 +17,7 @@ if [ ! -d $SOURCES/sources.list.d ]; then
     exit 1
 fi
 
-if [ -a $SOURCES/sources.list ]; then
-    mv $SOURCES/sources.list $SOURCES/sources.list.disabled
-fi
 
-if [ $# == 0 ]; then
-    mv "$SOURCES/sources.list.disabled" "$SOURCES/sources.list"
-fi
 
 declare -A LIST_FILES
 for source in `ls $SOURCES/*.list* | cut -d / -f 5 | cut -d . -f 1`; do
@@ -27,6 +25,13 @@ for source in `ls $SOURCES/*.list* | cut -d / -f 5 | cut -d . -f 1`; do
 done
 
 ACTION=enable
+# check for sources.list.d directory
+if [ ! -d $SOURCES/$SOURCES_D ]; then
+  mkdir $SOURCES/$SOURCES_D
+  echo "put your alternative sources in $SOURCES/$SOURCES_D/"
+  exit 1
+fi
+
 
 while true ; do
     case "$1" in
@@ -36,6 +41,15 @@ while true ; do
         -a|--add) ACTION=add ; shift ;;
         -r|--remove) ACTION=remove ; shift ;;
         -c|--config) ACTION=config ; shift ;;
+    -t|--toggle)
+      if [ -a $SOURCES/sources.list ]; then
+        mv $SOURCES/sources.list \
+           $SOURCES/sources.list.disabled
+      else
+        mv $SOURCES/sources.list.disabled \
+           $SOURCES/sources.list;
+      fi
+      shift ;;
         "") break ;;  # no more arguments
         *)
             # control opposite actions
