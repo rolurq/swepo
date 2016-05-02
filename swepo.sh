@@ -33,8 +33,18 @@ EOF
 }
 
 declare -A LIST_FILES
-for source in `ls $SOURCES/*.list* | cut -d / -f 5 | cut -d . -f 1`; do
-  LIST_FILES[$source]=disable ;
+for source in `ls $SOURCES/$SOURCES_D/*.list* | cut -d / -f 5`; do
+  name=`echo $source | cut -d . -f 1`
+  _status=`echo $source | cut -d . -f 3`
+  if [ -z $_status ]; then
+    _status='enabled'
+  fi
+
+  FILES="$name $FILES"
+  LIST_FILES[$name]=none ;
+  if [ $# == 0 ]; then
+    echo $name$'\t'$_status
+  fi
 done
 
 # check for sources.list.d directory
