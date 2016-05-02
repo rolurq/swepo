@@ -8,8 +8,9 @@ _swepo() {
 
     # generate completion list
     if [[ "$cur" == -* ]]; then
-        COMPREPLY=( $( compgen -W '-a --add -c --config -d --disable
-          -e --enable -r --remove' -- ${cur} ) )
+        COMPREPLY=( $( compgen -W '-a --add -c --config
+          -d --disable -e --enable -r --remove -t --toggle' \
+          -- ${cur} ) )
     else
         COMPREPLY=( $( compgen -W "${opts}" -- ${cur} ) )
     fi
