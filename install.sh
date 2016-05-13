@@ -15,7 +15,7 @@ fi
 
 source $swepo_base/completion.sh
 EOF
-exit
+
 file=~/.bashrc
 echo >> "$file"
 echo "[ -f ~/.swepo.sh ] && source ~/.swepo.sh" >> "$file"
