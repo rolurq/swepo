@@ -37,13 +37,15 @@ for source in `ls $SOURCES/$SOURCES_D/*.list* | cut -d / -f 5`; do
   name=`echo $source | cut -d . -f 1`
   _status=`echo $source | cut -d . -f 3`
   if [ -z $_status ]; then
-    _status='enabled'
+    _status="\e[0;1;32menabled\e[0;0m"
+  else
+    _status="\e[0;1;31m$_status\e[0;0m"
   fi
 
   FILES="$name $FILES"
   LIST_FILES[$name]=none ;
   if [ $# == 0 ]; then
-    echo $name$'\t'$_status
+    echo -e $name$'\t'$_status
   fi
 done
 
