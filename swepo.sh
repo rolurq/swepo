@@ -4,11 +4,6 @@
 SOURCES="/etc/apt"
 SOURCES_D="sources.list.d"
 
-if [ $(whoami) != "root" ]; then
-  sudo $0 $@
-  exit
-fi
-
 help() {
   cat << EOF
 usage: $0 [[ACTION] [LIST1 LIST2 ...]...]
@@ -48,6 +43,13 @@ for source in `ls $SOURCES/$SOURCES_D/*.list* | cut -d / -f 5`; do
     LIST_FILES[$name]=none ;
   fi
 done
+
+if [ $# == 0 ]; then exit 0; fi
+
+if [ $(whoami) != "root" ]; then
+  sudo $0 $@
+  exit
+fi
 
 # check for sources.list.d directory
 if [ ! -d $SOURCES/$SOURCES_D ]; then
