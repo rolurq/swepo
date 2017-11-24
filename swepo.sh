@@ -27,6 +27,8 @@ states
 EOF
 }
 
+status_str=''
+
 declare -A LIST_FILES
 for source in `ls $SOURCES/$SOURCES_D/*.list* | cut -d / -f 5`; do
   name=`echo $source | cut -d . -f 1`
@@ -37,12 +39,15 @@ for source in `ls $SOURCES/$SOURCES_D/*.list* | cut -d / -f 5`; do
     else
       _status="\e[0;1;31mdisabled\e[0;0m"
     fi
-    echo -e $name$'\t'$_status
+    status_str=${status_str}'\n'${name}'\t'${_status}
   else
     FILES="$name $FILES"
     LIST_FILES[$name]=none ;
   fi
 done
+
+# print formatted table
+echo -e ${status_str} | column -t
 
 if [ $# == 0 ]; then exit 0; fi
 
