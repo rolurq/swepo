@@ -27,7 +27,7 @@ states
 EOF
 }
 
-status_str=''
+status_str=
 
 declare -A LIST_FILES
 for source in `ls $SOURCES/$SOURCES_D/*.list* | cut -d / -f 5`; do
